@@ -35,7 +35,7 @@ export const useAudio = () => {
         })
         // cleanup 
         return () => {
-            stopSong()
+            stopPlaying()
             setAudio(null)
         }  
     },[])

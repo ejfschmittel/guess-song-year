@@ -1,7 +1,7 @@
 import React, {useState} from 'react'
 import {withRouter} from "react-router-dom"
 
-import {ReactComponent as MaginifyGlassIcon} from "../assets/svg/magnifying-glass.svg"
+import MaginifyGlassIcon from "../assets/svg/magnifying-glass.svg"
 
 const SearchInput = ({history}) => {
     const [searchTerm, setSearchTerm] = useState("")

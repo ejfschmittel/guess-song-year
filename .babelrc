@@ -1,23 +1,6 @@
 {
     "presets": [
-      [
-        "env", 
-        {
-          "targets" : {
-            "browsers" : ["last 2 versions"]
-          }
-        }
-      ],
-      "react"
-    ],
-    "plugins": [
-      "transform-class-properties",
-      "transform-object-rest-spread",
-      "syntax-dynamic-import",
-      ["transform-runtime", {
-        "polyfill": false,
-        "regenerator": true
-      }]
+      "@babel/preset-env",
+      "@babel/preset-react"
     ]
   }
-  

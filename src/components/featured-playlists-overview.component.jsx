@@ -1,6 +1,6 @@
 import React, {useEffect} from 'react'
 import {connect} from "react-redux"
-import PlaylistCard from "./playlist-card.component"
+import PlaylistCard from "./playlist-card.component.jsx"
 
 import {fetchFeaturedPlaylists} from "../redux/playlists/playlists.actions"
 

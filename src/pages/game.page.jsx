@@ -1,6 +1,6 @@
 import React, {useEffect, useState, useContext, useMemo} from 'react'
-import {connect} from "react-redux"
-import {Link} from "react-router-dom"
+import {useDispatch, useSelector} from "react-redux"
+import {Link, useParams} from "react-router-dom"
 
 import {AudioContext} from "../spotify/audio.context"
 
@@ -14,18 +14,16 @@ let audio = null
  * if(playlist is set) => 
  */
 
-const GamePage = (props) => {
-    const {
-        match,      
-        token,
-        songs,  
-        currentSongIndex,
-        fetchSongsError,
-        fetchSongsPending,
-        fetchPlaylistSongs, 
-        nextSong,  
-        resetSongs, 
-    } = props
+const GamePage = () => {
+
+    const dispatch = useDispatch()
+    const {playlistId} = useParams()
+    const token = useSelector(state => state.tokenReducer.token)
+    const songs = useSelector(state => state.songsReducer.songs)
+    const currentSongIndex = useSelector(state => state.songsReducer.currentSongIndex)
+    const fetchSongsError = useSelector(state => state.songsReducer.fetchSongsError)
+    const fetchSongsPending = useSelector(state => state.songsReducer.fetchSongsPending)
+
 
     const {startPlaying, stopPlaying} = useContext(AudioContext)
     const [revealed, setRevealed] = useState(false)
@@ -35,17 +33,17 @@ const GamePage = (props) => {
     
     useEffect(() => {
         console.log("on mount")
-        
-        const playlistId = match.params.playlistId
+    
         if(playlistId){
-            fetchPlaylistSongs(playlistId, token)
+            dispatch(fetchPlaylistSongs(playlistId, token))
         }  
         
         return () => {
-            resetSongs()
+            dispatch(resetSongs())
             stopPlaying()       
         }
     }, [])
+
 
     // update song on currentSongindex change or songs update
    useEffect(() => { 
@@ -69,7 +67,7 @@ const GamePage = (props) => {
         }else{
             // switch to next song
             if(songs.length > currentSongIndex){
-                nextSong(currentSongIndex);
+                dispatch(nextSong(currentSongIndex));
                 setRevealed(false)
             }
             stopPlaying();               
@@ -107,19 +105,6 @@ const GamePage = (props) => {
     )
 }
 
-const mapStateToProps = ({tokenReducer, songsReducer: {currentSongIndex, fetchSongsError, songs, fetchSongsPending}}) => ({
-    token: tokenReducer.token,
-    fetchSongsPending,
-    songs,
-    fetchSongsError,
-    currentSongIndex,
-})
-
-const mapDispatchToProps = (dispatch) => ({
-    resetSongs: () => dispatch(resetSongs()),
-    nextSong: (currentSongIndex) => dispatch(nextSong(currentSongIndex)),
-    fetchPlaylistSongs: (playlistId,token) => dispatch(fetchPlaylistSongs(playlistId,token))
-})
 
 
-export default connect(mapStateToProps, mapDispatchToProps)(GamePage)
+export default GamePage

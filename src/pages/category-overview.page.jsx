@@ -1,14 +1,19 @@
 import React, {useEffect} from 'react'
-import {connect} from "react-redux"
+import {useDispatch, useSelector} from "react-redux"
+import {useParams} from "react-router-dom"
 
 import {fetchCategoryPlaylists} from "../redux/playlists/playlists.actions"
 
-import PlaylistCard from "../components/playlist-card.component"
+import PlaylistCard from "../components/playlist-card.component.jsx"
 
-const CategoryOverview = ({match, token, categoryPlaylists, fetchCategoryPlaylists}) => {
-    const categoryId = match.params.categoryId
+const CategoryOverview = () => {
+    const dispatch = useDispatch()
+    const {categoryId} = useParams()
+    const token = useSelector(state => state.tokenReducer.token)
+    const categoryPlaylists = useSelector(state => state.playlistsReducer.categoryPlaylists)
 
-    useEffect(() => { fetchCategoryPlaylists(categoryId,token) },[])
+
+    useEffect(() => { dispatch(fetchCategoryPlaylists(categoryId,token)) },[])
 
     return (
         <div className="cards-display">
@@ -20,14 +25,5 @@ const CategoryOverview = ({match, token, categoryPlaylists, fetchCategoryPlaylis
     )
 }
 
-const mapStateToProps = ({tokenReducer, playlistsReducer: {categoryPlaylists, fetchCategoryPlaylistsError}}) => ({
-    token: tokenReducer.token,
-    categoryPlaylists,
-    fetchCategoryPlaylistsError,
-})
 
-const mapDispatchToProps = (dispatch) => ({
-    fetchCategoryPlaylists: (categoryId, token) => dispatch(fetchCategoryPlaylists(categoryId, token))
-})
-
-export default connect(mapStateToProps,mapDispatchToProps)(CategoryOverview)
+export default CategoryOverview

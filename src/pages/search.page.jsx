@@ -1,19 +1,23 @@
 import React, {useEffect} from 'react'
-import {connect} from "react-redux"
+import {useDispatch, useSelector} from "react-redux"
 
 import {searchPlaylists} from "../redux/playlists/playlists.actions"
 
-import PlaylistCard from "../components/playlist-card.component"
-import SearchInput from "../components/search-input.component"
+import PlaylistCard from "../components/playlist-card.component.jsx"
+import SearchInput from "../components/search-input.component.jsx"
+import { useParams } from 'react-router-dom'
 
 
-const CategoryPlaylistsPage = ({match, token, searchedPlaylists, searchPlaylists}) => {
+const CategoryPlaylistsPage = () => {
     
     // on mount fetch playlists matching the cateory id
-    ///useEffect(() => { searchPlaylists(searchTerm,token) },[])
-    const searchTerm = match.params.searchTerm
+    const  dispatch = useDispatch()
+    const {searchTerm} = useParams();
+    const token = useSelector(state => state.tokenReducer.token)
+    const searchedPlaylists = useSelector(state => state.playlistsReducer.searchedPlaylists)
 
-    useEffect(() => { searchPlaylists(searchTerm,token) }, [searchTerm])
+
+    useEffect(() => { dispatch(searchPlaylists(searchTerm,token)) }, [searchTerm])
 
     return (
         <div>
@@ -28,14 +32,4 @@ const CategoryPlaylistsPage = ({match, token, searchedPlaylists, searchPlaylists
     )
 }
 
-const mapStateToProps = ({tokenReducer, playlistsReducer: {searchedPlaylists, fetchSearchedPlaylistsError}}) => ({
-    token: tokenReducer.token,
-    searchedPlaylists,
-    fetchSearchedPlaylistsError,
-})
-
-const mapDispatchToProps = (dispatch) => ({
-    searchPlaylists: (searchTerm, token) => dispatch(searchPlaylists(searchTerm, token))
-})
-
-export default connect(mapStateToProps,mapDispatchToProps)(CategoryPlaylistsPage)
+export default CategoryPlaylistsPage

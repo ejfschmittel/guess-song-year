@@ -1,12 +1,18 @@
 import React, {useEffect} from 'react'
-import {connect} from "react-redux"
+import {useDispatch, useSelector} from "react-redux"
 
 import {fetchCategories} from "../redux/categories/categories.actions"
-import CategoryCard from "./category-card.component"
+import CategoryCard from "./category-card.component.jsx"
 
-const CategoryOverview = ({token, categories, fetchCategories, fetchCategoriesError}) => {
+const CategoryOverview = () => {
+    const dispatch = useDispatch()
 
-    useEffect(() => fetchCategories(token),[])
+    const token = useSelector(state => state.tokenReducer.token)
+    const categories = useSelector(state => state.categoriesReducer.categories)
+    const fetchCategoriesError = useSelector(state => state.categoriesReducer.fetchCategoriesError)
+
+
+    useEffect(() => dispatch(fetchCategories(token)),[])
 
     return (
         <div className="cards-display">
@@ -18,14 +24,5 @@ const CategoryOverview = ({token, categories, fetchCategories, fetchCategoriesEr
     )
 }
 
-const mapStateToProps = ({tokenReducer, categoriesReducer: {categories, fetchCategoriesError}}) => ({
-    token: tokenReducer.token,
-    categories,
-    fetchCategoriesError,
-})
 
-const mapDispatchToProps = (dispatch) => ({
-    fetchCategories: (token) => dispatch(fetchCategories(token))
-})
-
-export default connect(mapStateToProps,mapDispatchToProps)(CategoryOverview)
+export default CategoryOverview

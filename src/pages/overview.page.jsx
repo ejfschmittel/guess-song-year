@@ -1,17 +1,18 @@
 import React, {lazy, Suspense} from 'react'
 
-import SearchInput from "../components/search-input.component"
+import SearchInput from "../components/search-input.component.jsx"
 
-const FeaturedPlaylists = lazy(() => import("../components/featured-playlists-overview.component"))
-const UserPlaylists = lazy(() => import("../components/user-playlists-overview.component"))
-const CategoryOverview = lazy(() => import("../components/category-overview.component"))
+import FeaturedPlaylists from "../components/featured-playlists-overview.component.jsx";
+import UserPlaylists from "../components/user-playlists-overview.component.jsx";
+import CategoryOverview from "../components/category-overview.component.jsx";
+
 
 const OverviewPage = () => (
     <div>
         <SearchInput />
         <FeaturedPlaylists />
-        <UserPlaylists />
-        <CategoryOverview />             
+        <UserPlaylists />     
+        <CategoryOverview />
     </div>
 )
 
