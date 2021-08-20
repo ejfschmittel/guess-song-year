@@ -1,4 +1,4 @@
-﻿# Spotify Guess Song Year
+﻿# Guess song year
 
 A webapp written in React to guess the year a randomly selected song was released in.
 The App is using the Spotify Web Api (https://developer.spotify.com/documentation/web-api/).
